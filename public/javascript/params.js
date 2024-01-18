@@ -1,0 +1,1 @@
+DEFAULT_MAP_CENTER = {'lat': 47.9029, 'long': 1.9056}

@@ -1,0 +1,30 @@
+body {
+    padding: 50px;
+    font: 14px 'Poppins', "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+    color: #00B7FF;
+}
+
+#map {
+    width: 100%;
+    height: 500px;
+    border: 1px solid #AAA;
+    background-color: grey;
+}
+
+img.green-icon {
+    /*base color : blue*/
+    filter: hue-rotate(240deg);
+}
+
+img.red-icon {
+    /*base color : blue*/
+    filter: hue-rotate(133deg);
+}
+
+img.orange-icon {
+    /*base color : blue*/
+    filter: hue-rotate(163deg);
+}
