@@ -48,9 +48,9 @@ function buildMarkers() {
             // let coords = parking.coords.split(",");
 
             var marker;
-            if (parseInt(parking.nb_places_disponibles) === 0) {
+            if (parseInt(parking.nb_places_disponibles) < 2) {
                 marker = L.marker([parking.ylat, parking.xlong], {icon: redIcon}).addTo(map);
-            } else if (parseInt(parking.nb_places_disponibles) > 0 && parseInt(parking.nb_places_disponibles) < 30) {
+            } else if (parseInt(parking.taux_disponibilite) >= 2 && parseInt(parking.taux_disponibilite) < 20) {
                 marker = L.marker([parking.ylat, parking.xlong], {icon: goldIcon}).addTo(map);
             } else if (parking.places_disponibles_temps_reel !== "oui") {
                 marker = L.marker([parking.ylat, parking.xlong], {icon: greyIcon}).addTo(map);
