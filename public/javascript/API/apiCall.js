@@ -1,6 +1,7 @@
 
 
 async function getParking() {
+    // TODO : Passer l'URL en paramètre pour la rendre dynamique
     const headers = {
         Accept: "application/json",
     };
