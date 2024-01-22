@@ -1,0 +1,4 @@
+{
+  "AixMarseille": "https://data.ampmetropole.fr/api/explore/v2.1/catalog/datasets/disponibilites-des-places-de-parkings/records?limit=100",
+  "Orleans" : "https://data.orleans-metropole.fr/api/explore/v2.1/catalog/datasets/om-mobilite-parcs-stationnement/records?limit=100"
+}
