@@ -28,3 +28,14 @@ img.orange-icon {
     /*base color : blue*/
     filter: hue-rotate(163deg);
 }
+
+@media (max-width: 768px) {
+    body {
+        padding-right: 20px;
+        padding-left: 20px;
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+}

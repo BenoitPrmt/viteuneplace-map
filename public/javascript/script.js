@@ -1,4 +1,4 @@
-var map = L.map('map').setView([DEFAULT_MAP_CENTER.lat, DEFAULT_MAP_CENTER.long], 12);
+let map = L.map('map').setView([DEFAULT_MAP_CENTER.lat, DEFAULT_MAP_CENTER.long], 12);
 
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 20,
@@ -6,7 +6,7 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
-var greenIcon = new L.Icon({
+let greenIcon = new L.Icon({
     iconUrl: 'img/marker-icon-green.png',
     shadowUrl: 'img/marker-shadow.png',
     iconSize: [25, 41],
@@ -15,7 +15,7 @@ var greenIcon = new L.Icon({
     shadowSize: [41, 41]
 });
 
-var goldIcon = new L.Icon({
+let goldIcon = new L.Icon({
     iconUrl: 'img/marker-icon-2x-gold.png',
     shadowUrl: 'img/marker-shadow.png',
     iconSize: [25, 41],
@@ -24,7 +24,7 @@ var goldIcon = new L.Icon({
     shadowSize: [41, 41]
 });
 
-var redIcon = new L.Icon({
+let redIcon = new L.Icon({
     iconUrl: 'img/marker-icon-2x-red.png',
     shadowUrl: 'img/marker-shadow.png',
     iconSize: [25, 41],
@@ -33,7 +33,7 @@ var redIcon = new L.Icon({
     shadowSize: [41, 41]
 });
 
-var greyIcon = new L.Icon({
+let greyIcon = new L.Icon({
     iconUrl: 'img/marker-icon-2x-grey.png',
     shadowUrl: 'img/marker-shadow.png',
     iconSize: [25, 41],
@@ -45,18 +45,20 @@ var greyIcon = new L.Icon({
 function buildMarkers() {
     getParking().then((data) => {
         data.results.forEach((parking) => {
-            // let coords = parking.coords.split(",");
 
-            var marker;
+
+            let markerIcon;
             if (parseInt(parking.nb_places_disponibles) < 2) {
-                marker = L.marker([parking.ylat, parking.xlong], {icon: redIcon}).addTo(map);
+                markerIcon = redIcon;
             } else if (parseInt(parking.taux_disponibilite) >= 2 && parseInt(parking.taux_disponibilite) < 20) {
-                marker = L.marker([parking.ylat, parking.xlong], {icon: goldIcon}).addTo(map);
+                markerIcon = goldIcon;
             } else if (parking.places_disponibles_temps_reel !== "oui") {
-                marker = L.marker([parking.ylat, parking.xlong], {icon: greyIcon}).addTo(map);
+                markerIcon = greyIcon;
             } else {
-                marker = L.marker([parking.ylat, parking.xlong], {icon: greenIcon}).addTo(map);
+                markerIcon = greenIcon;
             }
+
+            let marker = L.marker([parking.ylat, parking.xlong], {icon: markerIcon}).addTo(map);
 
             let popupText;
             if (parking.places_disponibles_temps_reel === "oui") {
