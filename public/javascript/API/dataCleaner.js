@@ -16,7 +16,6 @@ function cleanData(data, city) {
     switch (city) {
         case "AixMarseille": // A VERIFIER
 
-
             // "nom":"Centre Bourse",
             // "voitureplacescapacite":1579,
             // "voitureplacesdisponibles":1247,
@@ -35,12 +34,11 @@ function cleanData(data, city) {
             // "lon":5.3746211528778,
             //     "lat":43.296632284718
 
-            data.forEach((parking) => {
-                parking = parking.results;
+            data.results.forEach((parking) => {
                 dataCleaneds.push({
                     name: parking.nom,
-                    xlong: parking.pointgeo.lon,
-                    ylat: parking.pointgeo.lat,
+                    xlong: parking.longitude,
+                    ylat: parking.latitude,
                     realtime: parking.tempsreel === "True",
                     available: parking.voitureplacesdisponibles,
                     total: parking.voitureplacescapacite,

@@ -1,8 +1,8 @@
 var map = L.map('map').setView([DEFAULT_MAP_CENTER.lat, DEFAULT_MAP_CENTER.long], 12);
 
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 20,
-    minZoom: 10,
+    // maxZoom: 20,
+    // minZoom: 10,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
@@ -43,7 +43,7 @@ var greyIcon = new L.Icon({
 });
 
 function buildMarkers() {
-    getParking().then((data) => {
+    getParking("https://data.orleans-metropole.fr/api/explore/v2.1/catalog/datasets/om-mobilite-parcs-stationnement/records?limit=100").then((data) => {
         data.results.forEach((parking) => {
             // let coords = parking.coords.split(",");
 
@@ -63,6 +63,37 @@ function buildMarkers() {
                 popupText = `<b>${parking.nom}</b><br>Place(s) disponible(s) : ${parking.nb_places_disponibles}<br>Place(s) totale(s) : ${parking.nb_places}<br>Disponibilité : ${Math.floor(parking.taux_disponibilite)}%`;
             } else {
                 popupText = `<b>${parking.nom}</b><br>Place(s) disponible(s) : Aucune donnée<br>Place(s) totale(s) : ${parking.nb_places}`;
+            }
+
+            marker.bindPopup(popupText).openPopup()
+        });
+    });
+
+    getParking("https://data.ampmetropole.fr/api/explore/v2.1/catalog/datasets/disponibilites-des-places-de-parkings/records?limit=100").then((data) => {
+        data = cleanData(data, "AixMarseille")
+        console.log(data)
+        data.forEach((parking) => {
+            // let coords = parking.coords.split(",");
+
+            var marker;
+            if (!parking.realtime) {
+                marker = L.marker([parking.ylat, parking.xlong], {icon: greyIcon}).addTo(map);
+            } else {
+                if (parking.available < 2) {
+                    marker = L.marker([parking.ylat, parking.xlong], {icon: redIcon}).addTo(map);
+                } else if (parking.disponibility >= 2 && parking.disponibility < 20) {
+                    marker = L.marker([parking.ylat, parking.xlong], {icon: goldIcon}).addTo(map);
+                } else {
+                    marker = L.marker([parking.ylat, parking.xlong], {icon: greenIcon}).addTo(map);
+                }
+            }
+
+
+            let popupText;
+            if (parking.realtime) {
+                popupText = `<b>${parking.name}</b><br>Place(s) disponible(s) : ${parking.available}<br>Place(s) totale(s) : ${parking.total}<br>Disponibilité : ${Math.floor(parking.disponibility)}%`;
+            } else {
+                popupText = `<b>${parking.name}</b><br>Place(s) disponible(s) : Aucune donnée<br>Place(s) totale(s) : ${parking.total}`;
             }
 
             marker.bindPopup(popupText).openPopup()
