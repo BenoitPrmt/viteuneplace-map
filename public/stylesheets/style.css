@@ -1,10 +1,22 @@
 body {
-    padding: 50px;
-    font: 14px 'Poppins', "Lucida Grande", Helvetica, Arial, sans-serif;
+    /*padding: 50px;*/
+    font: 14px 'Posppins', "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
     color: #00B7FF;
+}
+
+.cities {
+    padding: 10px;
+    background: #E5E5E5;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
 }
 
 #map {
@@ -27,4 +39,14 @@ img.red-icon {
 img.orange-icon {
     /*base color : blue*/
     filter: hue-rotate(163deg);
+}
+
+@media (max-width: 600px) {
+    h1 {
+        font-size: 18px;
+    }
+
+    .cities {
+        flex-direction: column;
+    }
 }

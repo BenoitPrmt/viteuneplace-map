@@ -42,21 +42,20 @@ let greyIcon = new L.Icon({
     shadowSize: [41, 41]
 });
 
-fetch("cities.json").then((response) => {
-    response.json().then((data) => {
-        console.log(data)
-        for (const d in data) {
-            console.log(d)
-            console.log(data[d])
-            buildMarkers(data[d], d)
-        }
-    });
-})
+// fetch("cities.json").then((response) => {
+//     response.json().then((data) => {
+//         console.log(data)
+//         for (const d in data) {
+//             console.log(d)
+//             console.log(data[d])
+//             buildMarkers(data[d], d)
+//         }
+//     });
+// })
 
 function buildMarkers(url, city) {
     getParking(url).then((data) => {
         data = cleanData(data, city)
-        console.log(data)
         data.forEach((parking) => {
 
             let marker;
@@ -85,4 +84,45 @@ function buildMarkers(url, city) {
     });
 }
 
-buildMarkers();
+// buildMarkers();
+
+let citiesData;
+fetch("cities.json").then((response) => {
+    response.json().then((data) => {
+        citiesData = data;
+    }).then(() => {
+        let localCurrentCity = localStorage.getItem("currentCity");
+        if (localCurrentCity) {
+            buildMarkers(citiesData[localCurrentCity], localCurrentCity);
+        } else {
+            buildMarkers(citiesData["Orleans"], "Orleans");
+            localStorage.setItem("currentCity", "Orleans");
+        }
+    });
+});
+
+let citiesElement = document.getElementById("cities");
+citiesElement = citiesElement.childNodes;
+
+citiesElement.forEach((city) => {
+    city.addEventListener("click", () => {
+        if(city.innerHTML === localStorage.getItem("currentCity")) return;
+
+        city.innerHTML = "Chargement...";
+
+        map.remove();
+        map = L.map('map').setView([DEFAULT_MAP_CENTER.lat, DEFAULT_MAP_CENTER.long], 12);
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            // maxZoom: 20,
+            // minZoom: 10,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+
+        let cityName = city.getAttribute("id");
+        localStorage.setItem("currentCity", cityName);
+
+        buildMarkers(citiesData[cityName], cityName);
+        city.innerHTML = cityName;
+    });
+});

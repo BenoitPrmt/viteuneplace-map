@@ -14,7 +14,7 @@ function cleanData(data, city) {
     let dataCleaneds = [];
 
     switch (city) {
-        case "AixMarseille":
+        case "Aix-Marseille":
             data.results.forEach((parking) => {
                 dataCleaneds.push({
                     name: parking.nom,
