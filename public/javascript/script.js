@@ -128,18 +128,20 @@ function getData(url, city) {
 function buildMarkers(data) {
     data.forEach((parking) => {
 
-        let marker;
+        let markerColor;
         if (!parking.realtime) {
-            marker = L.marker([parking.ylat, parking.xlong], {icon: greyIcon}).addTo(map);
+            markerColor = greyIcon;
         } else {
             if (parking.available < 2) {
-                marker = L.marker([parking.ylat, parking.xlong], {icon: redIcon}).addTo(map);
+                markerColor = redIcon;
             } else if (parking.disponibility >= 2 && parking.disponibility < 20) {
-                marker = L.marker([parking.ylat, parking.xlong], {icon: goldIcon}).addTo(map);
+                markerColor = goldIcon;
             } else {
-                marker = L.marker([parking.ylat, parking.xlong], {icon: greenIcon}).addTo(map);
+                markerColor = greenIcon;
             }
         }
+
+        let marker = L.marker([parking.ylat, parking.xlong], {icon: markerColor}).addTo(map);
 
         let popupText;
         if (parking.realtime) {
