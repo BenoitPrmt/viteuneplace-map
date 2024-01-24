@@ -59,6 +59,21 @@ img.orange-icon {
     filter: hue-rotate(163deg);
 }
 
+footer {
+    text-align: center;
+    padding: 3px;
+    background-color: #00B7FF;
+    color: white;
+    font-size: 12px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+footer a {
+    color: white;
+}
+
 @media (max-width: 600px) {
     h1 {
         display: none;
