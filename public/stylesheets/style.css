@@ -1,10 +1,46 @@
 body {
-    padding: 50px;
-    font: 14px 'Poppins', "Lucida Grande", Helvetica, Arial, sans-serif;
+    /*padding: 50px;*/
+    font: 14px 'Posppins', "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 a {
     color: #00B7FF;
+}
+
+.button {
+    background-color: #00B7FF;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 25px;
+}
+
+.button:hover {
+    background-color: #01a1de;
+    color: white;
+    cursor: pointer;
+}
+
+.cities {
+    padding: 10px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 #map {
@@ -29,13 +65,30 @@ img.orange-icon {
     filter: hue-rotate(163deg);
 }
 
-@media (max-width: 768px) {
-    body {
-        padding-right: 20px;
-        padding-left: 20px;
+footer {
+    text-align: center;
+    padding: 3px;
+    background-color: #00B7FF;
+    color: white;
+    font-size: 12px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+footer a {
+    color: white;
+}
+
+@media (max-width: 600px) {
+    h1 {
+        display: none;
     }
 
-    h1 {
-        font-size: 20px;
+    .cities {
+        flex-direction: row;
+        align-items: center;
+        gap: 5px;
+        flex-wrap: wrap;
     }
 }

@@ -1,4 +1,4 @@
-<h1 align="center">Live Parking Orleans 🚗</h1>
+<h1 align="center">Vite une place 🚗</h1>
 
 <p align="center">
   <img alt="Github top language" src="https://img.shields.io/github/languages/top/BenoitPrmt/Live-Parking-Orleans?color=56BEB8">
@@ -24,13 +24,17 @@
 
 ## :dart: About ##
 
-This project is a simple web application that allows you to view all the parking spaces in Orleans and their availability in real time.
+This project is a simple web application that allows you to view all the parking spaces in your city and their availability in real time.
 The web application is responsive.
 
 ## :sparkles: Features ##
 
-- View all the parking spaces in Orleans and their availability in real time
+- View all the parking spaces in your city and their availability in real time
 - Parking have a color code to indicate their availability
+
+### 🏡 Cities availables
+- Orléans (45)
+- Aix-Marseille (13)
 
 **Colors code:**<br>
 🟢 Green: Parking available<br>
@@ -54,10 +58,10 @@ Before starting :checkered_flag:, you need to have [Git](https://git-scm.com) in
 
 ```bash
 # Clone this project
-$ git clone https://github.com/BenoitPrmt/Live-Parking-Orleans
+$ git clone https://github.com/BenoitPrmt/viteuneplace.fr
 
 # Access
-$ cd Live-Parking-Orleans
+$ cd viteuneplace.fr
 
 # Run the project by opening the index.html file in your browser or with the live server extension of VSCode
 ```

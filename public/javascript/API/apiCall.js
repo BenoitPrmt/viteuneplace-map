@@ -1,11 +1,12 @@
 
 
-async function getParking() {
+async function getParking(url) {
+    // TODO : Passer l'URL en paramètre pour la rendre dynamique
     const headers = {
         Accept: "application/json",
     };
     try {
-        const response = await fetch("https://data.orleans-metropole.fr/api/explore/v2.1/catalog/datasets/om-mobilite-parcs-stationnement/records?limit=100", {
+        const response = await fetch(url, {
             method: "GET",
             headers: headers,
         });
