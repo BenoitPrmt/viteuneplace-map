@@ -79,6 +79,7 @@ function setDataInLocalStorage(data, city) {
     localStorage.setItem("lastUpdate", Date.now());
 }
 
+
 function checkLastUpdate() {
     let lastUpdate = localStorage.getItem("lastUpdate");
     if (lastUpdate) {
