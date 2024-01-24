@@ -3,6 +3,12 @@ body {
     font: 14px 'Posppins', "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 a {
     color: #00B7FF;
 }
