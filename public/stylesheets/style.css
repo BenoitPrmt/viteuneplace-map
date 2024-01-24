@@ -65,8 +65,10 @@ img.orange-icon {
     }
 
     .cities {
-        flex-direction: column;
+        flex-direction: row;
         align-items: center;
         gap: 5px;
+        flex-wrap: wrap;
     }
+
 }

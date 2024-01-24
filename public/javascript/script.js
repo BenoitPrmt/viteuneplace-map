@@ -53,34 +53,102 @@ let greyIcon = new L.Icon({
 //     });
 // })
 
-function buildMarkers(url, city) {
-    getParking(url).then((data) => {
-        data = cleanData(data, city)
-        data.forEach((parking) => {
-
-            let marker;
-            if (!parking.realtime) {
-                marker = L.marker([parking.ylat, parking.xlong], {icon: greyIcon}).addTo(map);
-            } else {
-                if (parking.available < 2) {
-                    marker = L.marker([parking.ylat, parking.xlong], {icon: redIcon}).addTo(map);
-                } else if (parking.disponibility >= 2 && parking.disponibility < 20) {
-                    marker = L.marker([parking.ylat, parking.xlong], {icon: goldIcon}).addTo(map);
-                } else {
-                    marker = L.marker([parking.ylat, parking.xlong], {icon: greenIcon}).addTo(map);
-                }
+function setDataInLocalStorage(data, city) {
+    let localData = JSON.parse(localStorage.getItem("data"));
+    if (localData) {
+        let found = false;
+        localData.forEach((d) => {
+            if (d.city === city) {
+                found = true;
+                d.data = data;
             }
-
-
-            let popupText;
-            if (parking.realtime) {
-                popupText = `<b>${parking.name}</b><br>Place(s) disponible(s) : ${parking.available}<br>Place(s) totale(s) : ${parking.total}<br>Disponibilité : ${Math.floor(parking.disponibility)}%`;
-            } else {
-                popupText = `<b>${parking.name}</b><br>Place(s) disponible(s) : Aucune donnée<br>Place(s) totale(s) : ${parking.total}`;
-            }
-
-            marker.bindPopup(popupText).openPopup()
         });
+        if (!found) {
+            localData.push({
+                city: city,
+                data: data,
+            });
+        }
+        localStorage.setItem("data", JSON.stringify(localData));
+    } else {
+        localStorage.setItem("data", JSON.stringify([{
+            city: city,
+            data: data,
+        }]));
+    }
+    localStorage.setItem("lastUpdate", Date.now());
+}
+
+function checkLastUpdate() {
+    let lastUpdate = localStorage.getItem("lastUpdate");
+    if (lastUpdate) {
+        let now = Date.now();
+        let diff = now - lastUpdate;
+        return diff > (60000 * 5);
+    } else {
+        return true;
+    }
+}
+
+function findCityInLocalStorage(city) {
+    let localData = JSON.parse(localStorage.getItem("data"));
+    if (localData) {
+        localData.forEach((d) => {
+            if (d.city === city) {
+                return d.data;
+            }
+        });
+    }
+    return null;
+}
+
+function getData(url, city) {
+
+    let localData = findCityInLocalStorage(city);
+
+    if (localData) {
+        if (checkLastUpdate()) {
+            getParking(url).then((data) => {
+                let dataCleaned = cleanData(data, city);
+                setDataInLocalStorage(dataCleaned, city);
+                buildMarkers(dataCleaned);
+            });
+        } else {
+            buildMarkers(localData);
+        }
+    } else {
+        getParking(url).then((data) => {
+            let dataCleaned = cleanData(data, city);
+            setDataInLocalStorage(dataCleaned, city);
+            buildMarkers(dataCleaned);
+        });
+    }
+}
+
+function buildMarkers(data) {
+    data.forEach((parking) => {
+
+        let marker;
+        if (!parking.realtime) {
+            marker = L.marker([parking.ylat, parking.xlong], {icon: greyIcon}).addTo(map);
+        } else {
+            if (parking.available < 2) {
+                marker = L.marker([parking.ylat, parking.xlong], {icon: redIcon}).addTo(map);
+            } else if (parking.disponibility >= 2 && parking.disponibility < 20) {
+                marker = L.marker([parking.ylat, parking.xlong], {icon: goldIcon}).addTo(map);
+            } else {
+                marker = L.marker([parking.ylat, parking.xlong], {icon: greenIcon}).addTo(map);
+            }
+        }
+
+        let popupText;
+        if (parking.realtime) {
+            popupText = `<b>${parking.name}</b><br>Place(s) disponible(s) : ${parking.available}<br>Place(s) totale(s) : ${parking.total}<br>Disponibilité : ${Math.floor(parking.disponibility)}%`;
+        } else {
+            popupText = `<b>${parking.name}</b><br>Place(s) disponible(s) : Aucune donnée<br>Place(s) totale(s) : ${parking.total}`;
+        }
+
+        marker.bindPopup(popupText).openPopup()
     });
 }
 
@@ -93,9 +161,9 @@ fetch("cities.json").then((response) => {
     }).then(() => {
         let localCurrentCity = localStorage.getItem("currentCity");
         if (localCurrentCity) {
-            buildMarkers(citiesData[localCurrentCity], localCurrentCity);
+            getData(citiesData[localCurrentCity], localCurrentCity);
         } else {
-            buildMarkers(citiesData["Orleans"], "Orleans");
+            getData(citiesData["Orleans"], "Orleans");
             localStorage.setItem("currentCity", "Orleans");
         }
     });
@@ -106,7 +174,7 @@ citiesElement = citiesElement.childNodes;
 
 citiesElement.forEach((city) => {
     city.addEventListener("click", () => {
-        if(city.innerHTML === localStorage.getItem("currentCity")) return;
+        if (city.innerHTML === localStorage.getItem("currentCity")) return;
 
         city.innerHTML = "Chargement...";
 
@@ -122,7 +190,7 @@ citiesElement.forEach((city) => {
         let cityName = city.getAttribute("id");
         localStorage.setItem("currentCity", cityName);
 
-        buildMarkers(citiesData[cityName], cityName);
+        getData(citiesData[cityName], cityName);
         city.innerHTML = cityName;
     });
 });
